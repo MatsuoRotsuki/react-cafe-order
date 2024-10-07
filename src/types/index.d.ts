@@ -73,9 +73,27 @@ interface IOptionalProp {
   options: IItemPropOption[];
 }
 
-interface Order {
+interface IOrder {
   id: string;
   totalAmount: number;
   orderDate: Date;
   orderStatus: OrderStatus;
+}
+
+interface IUserCart extends IUser {
+  cart: ICartItem[];
+}
+
+interface ICartItem {
+  menuItem: IMenuItem;
+  quantity: number;
+  baseProps: IItemPropOption;
+  variationProps: {
+    [key: string]: IItemPropOption;
+  };
+  extraProps: {
+    [key: string]: IItemPropOption[];
+  };
+  note: string;
+  calculatedPrice: number;
 }

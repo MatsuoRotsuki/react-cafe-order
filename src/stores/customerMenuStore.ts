@@ -1,19 +1,51 @@
 import { create } from "zustand";
-import { getCategories } from "../lib/menu";
+import { getMenuItems, searchMenuItems } from "../lib/customerMenu";
+import { getDishById } from "../lib/menu";
 
 interface ICustomerMenuStore {
-  categories: ICategory[];
-  getCategories: () => Promise<void>;
+  categories: Map<string, ICategory>;
+  menuItem: IMenuItem;
+  menuItemsMap: Map<string, IMenuItem>;
+  categoryToMenuItemsMap: Map<string, IMenuItem[]>;
+  getMenuItems: () => Promise<void>;
+  getCurrentMenuItem: (id: string) => Promise<void>;
+  searchMenuItems: (searchValue: string) => Promise<void>;
 }
 
-export const useCustomerMenuStore = create<ICustomerMenuStore>((set) => ({
-  categories: [],
+export const useCustomerMenuStore = create<ICustomerMenuStore>((set, get) => ({
+  categories: new Map<string, ICategory>(),
 
-  getCategories: async () => {
-    const categoriesData = await getCategories();
+  menuItem: {} as IMenuItem,
 
-    if (!categoriesData) return;
+  menuItemsMap: new Map<string, IMenuItem>(),
 
-    set({ categories: categoriesData as ICategory[] });
+  categoryToMenuItemsMap: new Map<string, IMenuItem[]>(),
+
+  getMenuItems: async () => {
+    const { categoriesMap, menuItemsMap, categoryToMenuItemsMap } =
+      await getMenuItems();
+
+    set({
+      categories: categoriesMap,
+      menuItemsMap: menuItemsMap,
+      categoryToMenuItemsMap: categoryToMenuItemsMap,
+    });
+  },
+
+  getCurrentMenuItem: async (id: string) => {
+    const menuItem = await getDishById(id);
+    if (!menuItem) return;
+    set({ menuItem: menuItem });
+  },
+
+  searchMenuItems: async (searchValue: string) => {
+    const { menuItemsMap, categoryToMenuItemsMap } = await searchMenuItems(
+      searchValue
+    );
+
+    set({
+      menuItemsMap: menuItemsMap,
+      categoryToMenuItemsMap: categoryToMenuItemsMap,
+    });
   },
 }));

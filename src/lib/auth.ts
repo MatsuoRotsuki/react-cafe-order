@@ -37,6 +37,7 @@ export const registerNewUser = async (credentials: RegisterCredentialsType) => {
       username: username,
       photoUrl: "",
       role: "customer",
+      cart: [],
     },
   });
 

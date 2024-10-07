@@ -14,7 +14,7 @@ export const getDishes = async () => {
     new Map<string, IMenuItem>()
   );
 
-  return { data: menuItems, total: menuItemsData?.length };
+  return { data: menuItems, total: (menuItemsData as IMenuItem[]).length };
 };
 
 export const getDishById = async (id: string | undefined) => {

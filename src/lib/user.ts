@@ -14,7 +14,7 @@ export const getAllUsers = async () => {
     new Map<string, IUser>()
   );
 
-  return { data: users, total: usersData?.length };
+  return { data: users, total: (usersData as IUser[]).length };
 };
 
 export const getUserById = async (id: string) => {

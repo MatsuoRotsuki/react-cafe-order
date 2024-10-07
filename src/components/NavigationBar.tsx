@@ -1,10 +1,16 @@
 import { Link } from "react-router-dom";
 import Logo from "../assets/coffee-logo.png";
-import { ShoppingCartOutlined } from "@ant-design/icons";
+import { ShoppingCartOutlined, UserOutlined } from "@ant-design/icons";
 import { useAuthStore } from "../stores/authStore";
+import { Badge, Button } from "antd";
+import { useCustomerCartStore } from "../stores/customerCartStore";
+import CartPopOverButton from "./CartPopOverButton";
 
 const NavigationBar = () => {
   const logout = useAuthStore((state) => state.logout);
+  const totalCart = useCustomerCartStore((state) => state.total);
+  const userCart = useCustomerCartStore((state) => state.userCart);
+
   return (
     <header className="sticky z-30 top-0 shadow-md shadow-gray-400">
       <nav className="py-3 px-4 bg-white border-gray-200 mx-auto container">
@@ -21,16 +27,14 @@ const NavigationBar = () => {
             </Link>
             <h4 className="text-2xl text-gray-700">Kafemely</h4>
           </div>
-          <div className="flex space-x-2 items-center justify-center">
-            <button className="border border-gray-400 py-2 px-3 ">
-              <ShoppingCartOutlined />
-            </button>
-            <button
-              className="border border-gray-400 py-2 px-3 "
-              onClick={logout}
-            >
-              Logout
-            </button>
+          <div className="flex space-x-5 items-center justify-center">
+            <Badge count={totalCart}>
+              <CartPopOverButton userCart={userCart}>
+                <Button shape="round" icon={<ShoppingCartOutlined />} />
+              </CartPopOverButton>
+            </Badge>
+            <Button shape="circle" icon={<UserOutlined />} />
+            <Button onClick={logout}>Đăng xuất</Button>
           </div>
         </div>
       </nav>

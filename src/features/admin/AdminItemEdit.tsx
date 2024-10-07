@@ -82,7 +82,6 @@ const AdminItemEdit = () => {
         availableExtraProps,
         thumbnailUrl: imageUrl,
       } as IMenuItem;
-      console.log(newItem);
       await updateDish(newItem);
 
       messageApi.open({

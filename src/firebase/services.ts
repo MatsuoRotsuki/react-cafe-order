@@ -54,6 +54,7 @@ export const getDocument = async (
     if (res.data()) {
       return {
         ...res.data(),
+        id: document.id,
       };
     }
   } else {
